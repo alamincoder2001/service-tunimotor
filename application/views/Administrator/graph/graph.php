@@ -228,16 +228,10 @@
         methods: {
             getGraphData(){
                 axios.get('/get_graph_data').then(res => {
-                    this.salesData = [
-                        ['Date', 'Sales']
-                    ]
                     res.data.monthly_record.forEach(d => {
                         this.salesData.push(d);
                     })
 
-                    this.yearlySalesData = [
-                        ['Month', 'Sales']
-                    ]
                     res.data.yearly_record.forEach(d => {
                         this.yearlySalesData.push(d);
                     })
@@ -253,16 +247,10 @@
                     this.customerDue = res.data.customer_due;
                     this.bankBalance = res.data.bank_balance;
 
-                    this.topCustomers = [
-                        ['Customer', 'Amount']
-                    ]
                     res.data.top_customers.forEach(c => {
                         this.topCustomers.push([c.customer_name, parseFloat(c.amount)]);
                     })
 
-                    this.topProducts = [
-                        ['Product', 'Quantity']
-                    ]
                     res.data.top_products.forEach(p => {
                         this.topProducts.push([p.product_name, parseFloat(p.sold_quantity)]);
                     })

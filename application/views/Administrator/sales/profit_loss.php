@@ -109,13 +109,13 @@
 							<td style="text-align:right;">{{ product.Purchase_Rate }}</td>
 							<td style="text-align:right;">{{ product.purchased_amount }}</td>
 							<td style="text-align:right;">{{ product.SaleDetails_TotalAmount }}</td>
-							<td style="text-align:right;">{{ product.profit_loss }}</td>
+							<td style="text-align:right;">{{ parseFloat(product.profit_loss).toFixed(2) }}</td>
 						</tr>
 						<tr style="background-color: #f0f0f0;font-weight: bold;">
 							<td colspan="4" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ data.saleDetails.reduce((prev, cur) => { return prev + parseFloat(cur.purchased_amount) }, 0) }}</td>
-							<td style="text-align:right;">{{ data.saleDetails.reduce((prev, cur) => { return prev + parseFloat(cur.SaleDetails_TotalAmount) }, 0) }}</td>
-							<td style="text-align:right;">{{ data.saleDetails.reduce((prev, cur) => { return prev + parseFloat(cur.profit_loss) }, 0) }}</td>
+							<td style="text-align:right;">{{ data.saleDetails.reduce((prev, cur) => { return prev + parseFloat(cur.purchased_amount) }, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ data.saleDetails.reduce((prev, cur) => { return prev + parseFloat(cur.SaleDetails_TotalAmount) }, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ data.saleDetails.reduce((prev, cur) => { return prev + parseFloat(cur.profit_loss) }, 0).toFixed(2) }}</td>
 						</tr>
 					</tbody>
 					<tfoot style="display:none;font-weight:bold;background-color:#e9dcdc;" v-bind:style="{display: reportData.length > 0 ? '' : 'none'}">
@@ -245,7 +245,7 @@
 					this.filter.customer = null;
 				}
 				this.reportData = await axios.post('/get_profit_loss', this.filter).then(res => {
-					return res.data;
+					return res.data
 				})
 
 				this.otherIncomeExpense = await axios.post('/get_other_income_expense', this.filter).then(res => {

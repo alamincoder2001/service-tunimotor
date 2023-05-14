@@ -198,7 +198,7 @@ window.onload = async () => {
 							<td style=""><?php echo $result->Product_Purchase_Rate; ?></td>
 							<td style=""><?php echo $totalPurchase; ?></td>
 							<td style=""><?php echo $totalSale; ?></td>
-							<td style=""><?php echo $totalSale-$totalPurchase; ?></td>
+							<td style=""><?php echo number_format($totalSale-$totalPurchase, 2); ?></td>
 						</tr>
 						<?php
 					}

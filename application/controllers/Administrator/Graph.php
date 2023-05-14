@@ -83,7 +83,7 @@
                         ', Due: ', sm.SaleMaster_DueAmount
                     ) as sale_text
                 from tbl_salesmaster sm 
-                join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
+                left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
                 where sm.Status = 'a'
                 and sm.SaleMaster_branchid = ?
                 order by sm.SaleMaster_SlNo desc limit 20
@@ -145,7 +145,7 @@
                 c.Customer_Name as customer_name,
                 ifnull(sum(sm.SaleMaster_TotalSaleAmount), 0) as amount
                 from tbl_salesmaster sm 
-                join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
+                left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
                 where sm.SaleMaster_branchid = ?
                 group by sm.SalseCustomer_IDNo
                 order by amount desc 
@@ -158,7 +158,7 @@
                     p.Product_Name as product_name,
                     ifnull(sum(sd.SaleDetails_TotalQuantity), 0) as sold_quantity
                 from tbl_saledetails sd
-                join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+                left join tbl_product p on p.Product_SlNo = sd.Product_IDNo
                 group by sd.Product_IDNo
                 order by sold_quantity desc
                 limit 5
@@ -177,17 +177,17 @@
             }, $bankTransactions));
 
             $responseData = [
-                'monthly_record' => $monthlyRecord,
-                'yearly_record' => $yearlyRecord,
-                'sales_text' => $sales,
-                'todays_sale' => $todaysSale,
-                'this_month_sale' => $thisMonthSale,
+                'monthly_record'    => $monthlyRecord,
+                'yearly_record'     => $yearlyRecord,
+                'sales_text'        => $sales,
+                'todays_sale'       => $todaysSale,
+                'this_month_sale'   => $thisMonthSale,
                 'todays_collection' => $todaysCollection,
-                'cash_balance' => $cashBalance,
-                'top_customers' => $topCustomers,
-                'top_products' => $topProducts,
-                'customer_due' => $customerDue,
-                'bank_balance' => $bankBalance
+                'cash_balance'      => $cashBalance,
+                'top_customers'     => $topCustomers,
+                'top_products'      => $topProducts,
+                'customer_due'      => $customerDue,
+                'bank_balance'      => $bankBalance
             ];
 
             echo json_encode($responseData, JSON_NUMERIC_CHECK);

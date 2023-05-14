@@ -245,21 +245,16 @@ class Sales extends CI_Controller {
                 c.Customer_Mobile,
                 c.Customer_Address,
                 e.Employee_Name,
-                br.Brunch_name,
-                (
-                    select ifnull(count(*), 0) from tbl_saledetails sd 
-                    where sd.SaleMaster_IDNo = 1
-                    and sd.Status != 'd'
-                ) as total_products
+                br.Brunch_name
             from tbl_salesmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
-            where sm.SaleMaster_branchid = '$branchId'
+            where sm.SaleMaster_branchid = ?
             and sm.Status = 'a'
             $clauses
             order by sm.SaleMaster_SlNo desc
-        ")->result();
+        ", $branchId)->result();
 
         foreach($sales as $sale){
             $sale->saleDetails = $this->db->query("
@@ -268,8 +263,8 @@ class Sales extends CI_Controller {
                     p.Product_Name,
                     pc.ProductCategory_Name
                 from tbl_saledetails sd
-                join tbl_product p on p.Product_SlNo = sd.Product_IDNo
-                join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                left join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+                left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
                 where sd.SaleMaster_IDNo = ?
                 and sd.Status != 'd'
             ", $sale->SaleMaster_SlNo)->result();
@@ -316,9 +311,9 @@ class Sales extends CI_Controller {
                     pc.ProductCategory_Name,
                     u.Unit_Name
                 from tbl_saledetails sd
-                join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+                left join tbl_product p on p.Product_SlNo = sd.Product_IDNo
                 left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
-                join tbl_unit u on u.Unit_SlNo = p.Unit_ID
+                left join tbl_unit u on u.Unit_SlNo = p.Unit_ID
                 where sd.SaleMaster_IDNo = ?
             ", $data->salesId)->result();
     
