@@ -378,8 +378,10 @@
 						this.products = res.data;
 					} else if (type == 'service') {
 						this.products = res.data.filter(p => p.is_service == 'true');
-					} else {
+					} else if (type == 'sales') {
 						this.products = res.data.filter(p => p.is_service != 'true');
+					} else {
+						this.products = res.data;
 					}
 				})
 			},
@@ -432,9 +434,12 @@
 					userFullName: this.selectedUser == null || this.selectedUser.FullName == '' ? '' : this.selectedUser.FullName,
 					customerId: this.selectedCustomer == null || this.selectedCustomer.Customer_SlNo == '' ? '' : this.selectedCustomer.Customer_SlNo,
 					employeeId: this.selectedEmployee == null || this.selectedEmployee.Employee_SlNo == '' ? '' : this.selectedEmployee.Employee_SlNo,
-					Service: this.is_service,
 					dateFrom: this.dateFrom,
 					dateTo: this.dateTo
+				}
+
+				if (this.searchType != '') {
+					filter.Service = this.is_service;
 				}
 
 				let url = '/get_sales';
